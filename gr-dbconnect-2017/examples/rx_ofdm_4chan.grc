@@ -1029,7 +1029,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0, 5000)</value>
+      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)</value>
     </param>
   </block>
   <block>
@@ -1092,7 +1092,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0, 5000)</value>
+      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)</value>
     </param>
   </block>
   <block>
@@ -1155,7 +1155,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0, 5000)</value>
+      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)</value>
     </param>
   </block>
   <block>
@@ -1218,7 +1218,7 @@
     </param>
     <param>
       <key>taps</key>
-      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0, 5000)</value>
+      <value>filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)</value>
     </param>
   </block>
   <block>
