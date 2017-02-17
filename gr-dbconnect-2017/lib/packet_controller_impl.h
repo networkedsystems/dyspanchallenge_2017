@@ -39,7 +39,7 @@ namespace gr {
 	  int d_mean3;
 	  int d_delay_1;
 	  int d_delay_2;
-	  int d_swtime;
+	  std::vector<int> d_swtime={15000,};
 	  int d_seed;
 	  int d_tconst;
 	  int d_gain_period;
@@ -48,6 +48,7 @@ namespace gr {
 	  int d_pkt_len;
 	  int d_scncnt = 0;
 	  int d_gcnt = 0;
+	  int d_swcnt= 0;
 	  int d_sum= 0;
 	  
 	  
@@ -77,7 +78,7 @@ namespace gr {
 	  const std::vector<int> d_gain_vals;
 
      public:
-      packet_controller_impl(float samp_rate, int swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
+      packet_controller_impl(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
       ~packet_controller_impl();
 
 	  void get_packet(pmt::pmt_t msg);

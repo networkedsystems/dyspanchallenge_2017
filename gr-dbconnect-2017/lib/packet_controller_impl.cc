@@ -25,13 +25,13 @@
 #include <gnuradio/io_signature.h>
 #include "packet_controller_impl.h"
 #include <random>
-#define dout  true && std::cout
+#define dout  false && std::cout
 
 namespace gr {
 	namespace dbconnect {
 
 		packet_controller::sptr
-			packet_controller::make(float  samp_rate, int swtime, int delay_1, int delay_2, 
+			packet_controller::make(float  samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, 
 					int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, 
 					const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen)
 			{
@@ -44,14 +44,13 @@ namespace gr {
 		/*
 		 * The private constructor
 		 */
-		packet_controller_impl::packet_controller_impl(float samp_rate, int swtime, int delay_1, int delay_2, 
+		packet_controller_impl::packet_controller_impl(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, 
 				int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, 
 				const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen)
 			: gr::block("packet_controller",
 					gr::io_signature::make(0, 0,0),
 					gr::io_signature::make(4, 4, sizeof(gr_complex))),
 			d_samp_rate(samp_rate),
-			d_swtime(swtime),
 			d_delay_1(delay_1),
 			d_delay_2(delay_2),
 			d_tconst(tconst),
@@ -80,7 +79,6 @@ namespace gr {
 			d_dist4 = new std::poisson_distribution<int> (d_mean3);
 			d_dist5 = new std::uniform_int_distribution<int> (0,1);
 
-			d_swtime_in_samp = d_swtime * d_samp_rate * 0.001;
 			d_gain_period_samp = d_gain_period * d_samp_rate * 0.001;
 
 			if(scen_list.size()!=0)
@@ -89,6 +87,12 @@ namespace gr {
 				d_scenearr = scen_list;
 			}
 
+			if(swtime.size()!=0)
+			{
+				d_swtime.resize(scen_list.size());
+				d_swtime = swtime;
+			}
+			d_swtime_in_samp = d_swtime[d_swcnt] * d_samp_rate * 0.001;
 
 			//randomize scenarios
 			if (d_rand_scen)
@@ -337,6 +341,8 @@ namespace gr {
 					{
 						d_inter_per[i] = 0; 
 					}
+					d_swcnt = (d_swcnt+1)%d_swtime.size();
+					d_swtime_in_samp = d_swtime[d_swcnt] * d_samp_rate * 0.001;
 				}
 			
 				if(d_gsamp_cnt>=d_gain_period_samp)

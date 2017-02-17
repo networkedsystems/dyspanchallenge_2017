@@ -11,12 +11,11 @@
 		<value>10e6</value>
 		<type>real</type>
 	</param>
-    <param>
+	<param>
       <name>Swtime</name>
       <key>swtime</key>
-      <value>60000</value>
-      <type>int</type>
-    </param>
+	  <type>raw</type>
+	</param>
     <param>
       <name>Delay-1</name>
       <key>delay_1</key>

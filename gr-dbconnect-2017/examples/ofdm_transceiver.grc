@@ -1433,7 +1433,7 @@
     </param>
     <param>
       <key>delay_2</key>
-      <value>100</value>
+      <value>10</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1449,7 +1449,7 @@
     </param>
     <param>
       <key>gain_vals</key>
-      <value>(range(-26, -21),)</value>
+      <value>(10,20,30)</value>
     </param>
     <param>
       <key>gain_period</key>
@@ -1497,7 +1497,7 @@
     </param>
     <param>
       <key>swtime</key>
-      <value>10000</value>
+      <value>(10000,)</value>
     </param>
     <param>
       <key>tconst</key>
