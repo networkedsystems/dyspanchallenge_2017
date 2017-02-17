@@ -25,5 +25,6 @@ install(FILES
     pktgen.h
     pktrecv.h
     pdu_fillpath_cpp.h
-    DESTINATION include/dbconnect
+    packet_controller.h
+    cmd_pktgen.h DESTINATION include/dbconnect
 )

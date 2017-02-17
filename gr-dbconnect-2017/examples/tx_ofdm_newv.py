@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: OFDM PU Phy
-# Generated: Fri Feb 17 17:32:15 2017
+# Generated: Fri Feb 17 17:32:21 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -28,12 +28,11 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
 import dbconnect
-import pmt
 import sys
 import time
 
 
-class tx_ofdm(gr.top_block, Qt.QWidget):
+class tx_ofdm_newv(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "OFDM PU Phy")
@@ -55,7 +54,7 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "tx_ofdm")
+        self.settings = Qt.QSettings("GNU Radio", "tx_ofdm_newv")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -112,48 +111,6 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
                 taps=(taps),
                 fractional_bw=None,
         )
-        self.digital_ofdm_tx_0_2 = digital.ofdm_tx(
-        	  fft_len=fft_len, cp_len=fft_len/4,
-        	  packet_length_tag_key=len_tag_key,
-        	  occupied_carriers=occupied_carriers,
-        	  pilot_carriers=pilot_carriers,
-        	  pilot_symbols=pilot_symbols,
-        	  sync_word1=sync_word1,
-        	  sync_word2=sync_word2,
-        	  bps_header=1,
-        	  bps_payload=2,
-        	  rolloff=0,
-        	  debug_log=False,
-        	  scramble_bits=False
-        	 )
-        self.digital_ofdm_tx_0_1 = digital.ofdm_tx(
-        	  fft_len=fft_len, cp_len=fft_len/4,
-        	  packet_length_tag_key=len_tag_key,
-        	  occupied_carriers=occupied_carriers,
-        	  pilot_carriers=pilot_carriers,
-        	  pilot_symbols=pilot_symbols,
-        	  sync_word1=sync_word1,
-        	  sync_word2=sync_word2,
-        	  bps_header=1,
-        	  bps_payload=2,
-        	  rolloff=0,
-        	  debug_log=False,
-        	  scramble_bits=False
-        	 )
-        self.digital_ofdm_tx_0_0 = digital.ofdm_tx(
-        	  fft_len=fft_len, cp_len=fft_len/4,
-        	  packet_length_tag_key=len_tag_key,
-        	  occupied_carriers=occupied_carriers,
-        	  pilot_carriers=pilot_carriers,
-        	  pilot_symbols=pilot_symbols,
-        	  sync_word1=sync_word1,
-        	  sync_word2=sync_word2,
-        	  bps_header=1,
-        	  bps_payload=2,
-        	  rolloff=0,
-        	  debug_log=False,
-        	  scramble_bits=False
-        	 )
         self.digital_ofdm_tx_0 = digital.ofdm_tx(
         	  fft_len=fft_len, cp_len=fft_len/4,
         	  packet_length_tag_key=len_tag_key,
@@ -168,24 +125,15 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
         	  debug_log=False,
         	  scramble_bits=False
         	 )
-        self.dbconnect_pktgen_0 = dbconnect.pktgen(1, packet_len, False, False, False, "127.0.0.1", 5002, 5, 10, 2, 20, 50, 100, 60000, 0.05, 6643, 5, 30, 2000, 2)
-        self.dbconnect_pdu_fillpath_cpp_0_0_1 = dbconnect.pdu_fillpath_cpp()
-        self.dbconnect_pdu_fillpath_cpp_0_0_0 = dbconnect.pdu_fillpath_cpp()
-        self.dbconnect_pdu_fillpath_cpp_0_0 = dbconnect.pdu_fillpath_cpp()
-        self.dbconnect_pdu_fillpath_cpp_0 = dbconnect.pdu_fillpath_cpp()
-        self.blocks_tagged_stream_to_pdu_0_3_1 = blocks.tagged_stream_to_pdu(blocks.complex_t, "packet_len")
-        self.blocks_tagged_stream_to_pdu_0_3_0 = blocks.tagged_stream_to_pdu(blocks.complex_t, "packet_len")
-        self.blocks_tagged_stream_to_pdu_0_3 = blocks.tagged_stream_to_pdu(blocks.complex_t, "packet_len")
+        self.dbconnect_packet_controller_0 = dbconnect.packet_controller(2.5e6, 10000, 5, 10, 2, 20, 10, 5, 6643, 30000, (10,20,30), (7,8,9), True)
+        self.dbconnect_cmd_pktgen_0 = dbconnect.cmd_pktgen("127.0.0.1", 5002, 64, True)
         self.blocks_tagged_stream_to_pdu_0 = blocks.tagged_stream_to_pdu(blocks.complex_t, "packet_len")
-        self.blocks_pdu_to_tagged_stream_0_0_1 = blocks.pdu_to_tagged_stream(blocks.byte_t, "packet_len")
-        self.blocks_pdu_to_tagged_stream_0_0_0 = blocks.pdu_to_tagged_stream(blocks.byte_t, "packet_len")
-        self.blocks_pdu_to_tagged_stream_0_0 = blocks.pdu_to_tagged_stream(blocks.byte_t, "packet_len")
         self.blocks_pdu_to_tagged_stream_0 = blocks.pdu_to_tagged_stream(blocks.byte_t, "packet_len")
         self.blocks_multiply_xx_0_3 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0_2 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0_1 = blocks.multiply_vcc(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.18, ))
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.09, ))
         self.blocks_message_debug_0 = blocks.message_debug()
         self.blocks_add_xx_2 = blocks.add_vcc(1)
         self.analog_sig_source_x_0_3 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, -3.75e6, 1, 0)
@@ -196,16 +144,10 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.dbconnect_pdu_fillpath_cpp_0, 'in0'))    
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0_3, 'pdus'), (self.dbconnect_pdu_fillpath_cpp_0_0, 'in0'))    
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0_3_0, 'pdus'), (self.dbconnect_pdu_fillpath_cpp_0_0_0, 'in0'))    
-        self.msg_connect((self.blocks_tagged_stream_to_pdu_0_3_1, 'pdus'), (self.dbconnect_pdu_fillpath_cpp_0_0_1, 'in0'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'cmd'), (self.blocks_message_debug_0, 'print'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'out0'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'out1'), (self.blocks_pdu_to_tagged_stream_0_0, 'pdus'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'out2'), (self.blocks_pdu_to_tagged_stream_0_0_0, 'pdus'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'out3'), (self.blocks_pdu_to_tagged_stream_0_0_1, 'pdus'))    
-        self.msg_connect((self.dbconnect_pktgen_0, 'cmd'), (self.uhd_usrp_sink_0, 'command'))    
+        self.msg_connect((self.blocks_tagged_stream_to_pdu_0, 'pdus'), (self.dbconnect_packet_controller_0, 'in0'))    
+        self.msg_connect((self.dbconnect_cmd_pktgen_0, 'out0'), (self.blocks_pdu_to_tagged_stream_0, 'pdus'))    
+        self.msg_connect((self.dbconnect_packet_controller_0, 'gcmd'), (self.blocks_message_debug_0, 'print'))    
+        self.msg_connect((self.dbconnect_packet_controller_0, 'cmd'), (self.dbconnect_cmd_pktgen_0, 'cmd'))    
         self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 1))    
         self.connect((self.analog_sig_source_x_0_1, 0), (self.blocks_multiply_xx_0_1, 1))    
         self.connect((self.analog_sig_source_x_0_2, 0), (self.blocks_multiply_xx_0_2, 1))    
@@ -217,24 +159,18 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_multiply_xx_0_2, 0), (self.blocks_add_xx_2, 2))    
         self.connect((self.blocks_multiply_xx_0_3, 0), (self.blocks_add_xx_2, 3))    
         self.connect((self.blocks_pdu_to_tagged_stream_0, 0), (self.digital_ofdm_tx_0, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0, 0), (self.digital_ofdm_tx_0_0, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0_0, 0), (self.digital_ofdm_tx_0_1, 0))    
-        self.connect((self.blocks_pdu_to_tagged_stream_0_0_1, 0), (self.digital_ofdm_tx_0_2, 0))    
-        self.connect((self.dbconnect_pdu_fillpath_cpp_0, 0), (self.rational_resampler_xxx_0_0, 0))    
-        self.connect((self.dbconnect_pdu_fillpath_cpp_0_0, 0), (self.rational_resampler_xxx_0_0_1, 0))    
-        self.connect((self.dbconnect_pdu_fillpath_cpp_0_0_0, 0), (self.rational_resampler_xxx_0_0_1_0, 0))    
-        self.connect((self.dbconnect_pdu_fillpath_cpp_0_0_1, 0), (self.rational_resampler_xxx_0_0_1_1, 0))    
+        self.connect((self.dbconnect_packet_controller_0, 0), (self.rational_resampler_xxx_0_0, 0))    
+        self.connect((self.dbconnect_packet_controller_0, 1), (self.rational_resampler_xxx_0_0_1, 0))    
+        self.connect((self.dbconnect_packet_controller_0, 2), (self.rational_resampler_xxx_0_0_1_0, 0))    
+        self.connect((self.dbconnect_packet_controller_0, 3), (self.rational_resampler_xxx_0_0_1_1, 0))    
         self.connect((self.digital_ofdm_tx_0, 0), (self.blocks_tagged_stream_to_pdu_0, 0))    
-        self.connect((self.digital_ofdm_tx_0_0, 0), (self.blocks_tagged_stream_to_pdu_0_3, 0))    
-        self.connect((self.digital_ofdm_tx_0_1, 0), (self.blocks_tagged_stream_to_pdu_0_3_0, 0))    
-        self.connect((self.digital_ofdm_tx_0_2, 0), (self.blocks_tagged_stream_to_pdu_0_3_1, 0))    
         self.connect((self.rational_resampler_xxx_0_0, 0), (self.blocks_multiply_xx_0, 0))    
         self.connect((self.rational_resampler_xxx_0_0_1, 0), (self.blocks_multiply_xx_0_1, 0))    
         self.connect((self.rational_resampler_xxx_0_0_1_0, 0), (self.blocks_multiply_xx_0_2, 0))    
         self.connect((self.rational_resampler_xxx_0_0_1_1, 0), (self.blocks_multiply_xx_0_3, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "tx_ofdm")
+        self.settings = Qt.QSettings("GNU Radio", "tx_ofdm_newv")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -321,7 +257,7 @@ class tx_ofdm(gr.top_block, Qt.QWidget):
         self.decim_factor = decim_factor
 
 
-def main(top_block_cls=tx_ofdm, options=None):
+def main(top_block_cls=tx_ofdm_newv, options=None):
     if gr.enable_realtime_scheduling() != gr.RT_OK:
         print "Error: failed to enable real-time scheduling."
 

@@ -28,7 +28,8 @@ list(APPEND dbconnect_sources
     pktgen_impl.cc
     pktrecv_impl.cc
     pdu_fillpath_cpp_impl.cc
-    )
+    packet_controller_impl.cc
+    cmd_pktgen_impl.cc )
 
 set(dbconnect_sources "${dbconnect_sources}" PARENT_SCOPE)
 if(NOT dbconnect_sources)

@@ -20,5 +20,6 @@ install(FILES
     dbconnect_pktgen.xml
     dbconnect_pktrecv.xml
     dbconnect_pdu_fillpath_cpp.xml
-    DESTINATION share/gnuradio/grc/blocks
+    dbconnect_packet_controller.xml
+    dbconnect_cmd_pktgen.xml DESTINATION share/gnuradio/grc/blocks
 )

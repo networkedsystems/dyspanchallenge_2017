@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: OFDM RX Phy
-# Generated: Thu Feb  2 17:17:04 2017
+# Generated: Fri Feb 17 17:32:18 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -84,7 +84,7 @@ class rx_ofdm(gr.top_block, Qt.QWidget):
         self.uhd_usrp_source_1.set_center_freq(1255e6, 0)
         self.uhd_usrp_source_1.set_gain(5, 0)
         self.uhd_usrp_source_1.set_antenna("RX2", 0)
-        self.freq_xlating_fft_filter_ccc_0_2 = filter.freq_xlating_fft_filter_ccc(decim_factor, (filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)), -3.75e6, usrp_samp_rate)
+        self.freq_xlating_fft_filter_ccc_0_2 = filter.freq_xlating_fft_filter_ccc(decim_factor, (filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*.98, 5000)), -3.75e6, usrp_samp_rate)
         self.freq_xlating_fft_filter_ccc_0_2.set_nthreads(4)
         self.freq_xlating_fft_filter_ccc_0_2.declare_sample_delay(0)
         self.freq_xlating_fft_filter_ccc_0_1 = filter.freq_xlating_fft_filter_ccc(decim_factor, (filter.firdes.low_pass(1,usrp_samp_rate, samp_rate/2.0*0.98, 5000)), 3.75e6, usrp_samp_rate)
@@ -189,7 +189,7 @@ class rx_ofdm(gr.top_block, Qt.QWidget):
     def set_usrp_samp_rate(self, usrp_samp_rate):
         self.usrp_samp_rate = usrp_samp_rate
         self.uhd_usrp_source_1.set_samp_rate(self.usrp_samp_rate)
-        self.freq_xlating_fft_filter_ccc_0_2.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
+        self.freq_xlating_fft_filter_ccc_0_2.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0_1.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0_0.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
@@ -211,7 +211,7 @@ class rx_ofdm(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.freq_xlating_fft_filter_ccc_0_2.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
+        self.freq_xlating_fft_filter_ccc_0_2.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0_1.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0_0.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
         self.freq_xlating_fft_filter_ccc_0.set_taps((filter.firdes.low_pass(1,self.usrp_samp_rate, self.samp_rate/2.0*0.98, 5000)))
