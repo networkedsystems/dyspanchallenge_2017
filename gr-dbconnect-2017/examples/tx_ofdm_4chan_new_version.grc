@@ -1214,7 +1214,7 @@
     </param>
     <param>
       <key>delay_1</key>
-      <value>5</value>
+      <value>50</value>
     </param>
     <param>
       <key>delay_2</key>
@@ -1270,11 +1270,11 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>2.5e6</value>
+      <value>samp_rate/interp_factor</value>
     </param>
     <param>
       <key>scen_list</key>
-      <value>(7,8,9)</value>
+      <value>(0,1,2)</value>
     </param>
     <param>
       <key>seed</key>
@@ -1711,7 +1711,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -3134,6 +3134,12 @@
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
     <sink_block_id>blocks_throttle_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
+    <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

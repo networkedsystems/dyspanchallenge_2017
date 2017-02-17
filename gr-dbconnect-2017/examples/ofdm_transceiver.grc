@@ -1485,7 +1485,7 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>2.5e6</value>
+      <value>samp_rate/interp_factor</value>
     </param>
     <param>
       <key>scen_list</key>

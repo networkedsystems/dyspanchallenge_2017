@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: OFDM PU Phy
-# Generated: Fri Feb 17 17:30:45 2017
+# Generated: Fri Feb 17 18:53:20 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -182,7 +182,7 @@ class ofdm_trans(gr.top_block, Qt.QWidget):
         	  scramble_bits=False
         	 )
         self.dbconnect_pktrecv_0 = dbconnect.pktrecv("127.0.0.1", 5002, False)
-        self.dbconnect_packet_controller_0 = dbconnect.packet_controller(2.5e6, 10000, 5, 100, 2, 5, 5, 5, 6643, 60000, (range(-26, -21),), (), False)
+        self.dbconnect_packet_controller_0 = dbconnect.packet_controller(samp_rate/interp_factor, 10000, 5, 100, 2, 5, 5, 5, 6643, 60000, (range(-26, -21),), (), False)
         self.dbconnect_cmd_pktgen_0 = dbconnect.cmd_pktgen("127.0.0.1", 5002, 64, True)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
         self.blocks_tagged_stream_to_pdu_0_2 = blocks.tagged_stream_to_pdu(blocks.byte_t, "rx_len")
