@@ -4,7 +4,7 @@
   <key>dbconnect_packet_controller</key>
   <category>[dbconnect]</category>
   <import>import dbconnect</import>
-  <make>dbconnect.packet_controller($samp_rate, $swtime, $delay_1, $delay_2, $tconst, $mean1, $mean2, $mean3, $seed, $gain_period, $gain_vals, $scen_list, $rand_scen)</make>
+  <make>dbconnect.packet_controller($samp_rate, $swtime, $delay_1, $delay_2, $tconst, $mean1, $mean2, $mean3, $seed, $gain_period, $ant_period, $gain_vals, $scen_list, $rand_scen)</make>
 	<param>
 		<name>Sample rate</name>
 		<key>samp_rate</key>
@@ -75,9 +75,15 @@
       <type>int</type>
     </param>
 	<param>
+      <name>Ant_per</name>
+      <key>ant_period</key>
+      <value>60000</value>
+      <type>int</type>
+    </param>
+	<param>
 		<name>Randomize Scenarios</name>
 		<key>rand_scen</key>
-		<value>True</value>
+		<value>False</value>
 		<type>bool</type>
 		<option>
 			<name>Enable</name>

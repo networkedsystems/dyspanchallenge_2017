@@ -25,19 +25,19 @@
 #include <gnuradio/io_signature.h>
 #include "packet_controller_impl.h"
 #include <random>
-#define dout  false && std::cout
+#define dout false && std::cout
 
 namespace gr {
 	namespace dbconnect {
 
 		packet_controller::sptr
 			packet_controller::make(float  samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, 
-					int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, 
+					int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, int ant_period, 
 					const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen)
 			{
 				return gnuradio::get_initial_sptr
 					(new packet_controller_impl(samp_rate, swtime, delay_1, delay_2, 
-												tconst, mean1, mean2, mean3, seed, gain_period, 
+												tconst, mean1, mean2, mean3, seed, gain_period, ant_period, 
 												gain_vals, scen_list, rand_scen));
 			}
 
@@ -45,7 +45,7 @@ namespace gr {
 		 * The private constructor
 		 */
 		packet_controller_impl::packet_controller_impl(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, 
-				int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, 
+				int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, int ant_period, 
 				const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen)
 			: gr::block("packet_controller",
 					gr::io_signature::make(0, 0,0),
@@ -59,6 +59,7 @@ namespace gr {
 			d_mean3(mean3),
 			d_seed(seed),
 			d_gain_period(gain_period),
+			d_ant_period(ant_period),
 			d_gain_vals(gain_vals),
 			d_rand_scen(rand_scen)
 		{
@@ -73,13 +74,16 @@ namespace gr {
 			d_gen3 = new std::default_random_engine(d_seed); 
 			d_gen4 = new std::default_random_engine(d_seed); 
 			d_gen5 = new std::default_random_engine(d_seed); 
+			d_genant = new std::default_random_engine(d_seed); 
 			d_dist1 = new std::uniform_int_distribution<int> (0,3);
 			d_dist2 = new std::poisson_distribution<int> (d_mean1);
 			d_dist3 = new std::poisson_distribution<int> (d_mean2);
 			d_dist4 = new std::poisson_distribution<int> (d_mean3);
 			d_dist5 = new std::uniform_int_distribution<int> (0,1);
+			d_distant = new std::uniform_int_distribution<int> (0,5);
 
 			d_gain_period_samp = d_gain_period * d_samp_rate * 0.001;
+			d_ant_period_samp = d_ant_period * d_samp_rate * 0.001;
 
 			if(scen_list.size()!=0)
 			{
@@ -137,11 +141,13 @@ namespace gr {
 			delete d_gen3 ; 
 			delete d_gen4 ; 
 			delete d_gen5 ; 
+			delete d_genant ; 
 			delete d_dist1;
 			delete d_dist2;
 			delete d_dist3;
 			delete d_dist4;
 			delete d_dist5;
+			delete d_distant;
 		}
 
 		void packet_controller_impl::get_packet(pmt::pmt_t msg) {
@@ -151,6 +157,11 @@ namespace gr {
 			pmt::pmt_t curr_vect = pmt::cdr(msg);
 			d_pkt_len = pmt::blob_length(curr_vect)/sizeof(gr_complex);
 
+			if (d_once)
+			{
+			 d_once = false;
+			 spectrum_reportScenario(NULL, d_scenearr[d_scncnt]);
+			}
 		}
 
 		void packet_controller_impl::request_cmd(int pktcnt) {
@@ -327,6 +338,7 @@ namespace gr {
 					gr_vector_void_star &output_items)
 			{
 
+
 				//select scenario based on switching time
 				if(d_samp_cnt>=d_swtime_in_samp)
 				{
@@ -334,6 +346,7 @@ namespace gr {
 					d_samp_cnt=0;
 					d_dist_type = d_scenearr[d_scncnt];
 					dout << "Inside switching: scenario: " << d_scenearr[d_scncnt] << std::endl;
+					spectrum_reportScenario(NULL, d_scenearr[d_scncnt]);
 					//update selection based on scenarios
 					update_channels(d_dist_type);
 					//make all delays=0 while switching scenarios
@@ -351,6 +364,13 @@ namespace gr {
 					message_port_pub(pmt::mp("gcmd"), pmt::cons(pmt::mp("gain"), pmt::mp(d_gain_vals[d_gcnt])));
 					d_gcnt= (d_gcnt+1)%d_gain_vals.size();
 				}
+				
+				if(d_asamp_cnt>=d_ant_period_samp)
+				{
+					d_asamp_cnt=0;
+					spectrum_reportAntenna(NULL,(*d_distant)(*d_genant));
+					dout << "Inside antenna switching " << std::endl;
+				}
 
 
 				//update delays on enabled channels if minimum delay in any channel is 0
@@ -364,9 +384,10 @@ namespace gr {
 						if(d_sel_chan[i])
 						{
 							d_sum+=1;
-							if(d_msg_queue->count() < 10)
+							if(d_msg_queue->count() < 10 && d_reqcnt<4)
 							{
 								request_cmd((10-d_msg_queue->count()));
+								d_reqcnt++;
 							}
 						}
 					}
@@ -395,6 +416,7 @@ namespace gr {
 									memcpy(output_items[i], ptr, d_pkt_len * sizeof(gr_complex));
 									//replace zero delays on enabled channels
 									d_inter_per[i] = get_delay(d_dist_type);
+									d_reqcnt--;
 								}
 							}
 
@@ -404,6 +426,7 @@ namespace gr {
 							d_pktmode = false;
 							d_samp_cnt += d_pkt_len;
 							d_gsamp_cnt += d_pkt_len;
+							d_asamp_cnt += d_pkt_len;
 							consume_each(d_pkt_len);
 							//update channels if in hopping mode
 							if (d_dist_type ==2 || d_dist_type == 3)
@@ -438,6 +461,7 @@ namespace gr {
 
 						d_samp_cnt += minval;
 						d_gsamp_cnt += minval;
+						d_asamp_cnt += minval;
 						consume_each(minval);
 						return minval;
 					}

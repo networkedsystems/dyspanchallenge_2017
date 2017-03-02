@@ -24,6 +24,9 @@
 #include <dbconnect/packet_controller.h>
 #include <gnuradio/messages/msg_queue.h>
 #include <random>
+extern "C"{
+#include "packetLib.h"
+}
 
 namespace gr {
   namespace dbconnect {
@@ -34,9 +37,11 @@ namespace gr {
 	  bool d_sel_chan[4] = {false, false, false, false};
 	  bool d_rand_scen;
 	  bool d_pktmode=true;
+	  bool d_once=true;
 	  int d_mean1;
 	  int d_mean2;
 	  int d_mean3;
+	  int d_reqcnt=0;
 	  int d_delay_1;
 	  int d_delay_2;
 	  std::vector<int> d_swtime={15000,};
@@ -44,6 +49,8 @@ namespace gr {
 	  int d_tconst;
 	  int d_gain_period;
 	  int d_gain_period_samp;
+	  int d_ant_period;
+	  int d_ant_period_samp;
 	  float d_samp_rate;
 	  int d_pkt_len;
 	  int d_scncnt = 0;
@@ -54,6 +61,7 @@ namespace gr {
 	  
 	  int d_samp_cnt=0;
 	  int d_gsamp_cnt=0;
+	  int d_asamp_cnt=0;
 	  int d_dist_type=0;
 	  int d_swtime_in_samp;
 	  int d_delaysamp;
@@ -68,17 +76,19 @@ namespace gr {
 	  std::default_random_engine *d_gen3;
 	  std::default_random_engine *d_gen4;
 	  std::default_random_engine *d_gen5;
+	  std::default_random_engine *d_genant;
 	  std::uniform_int_distribution<int> *d_dist1;
 	  std::poisson_distribution<int> *d_dist2;
 	  std::poisson_distribution<int> *d_dist3;
 	  std::poisson_distribution<int> *d_dist4;
 	  std::uniform_int_distribution<int> *d_dist5;
+	  std::uniform_int_distribution<int> *d_distant;
 	  
 	  gr::messages::msg_queue* d_msg_queue;
 	  const std::vector<int> d_gain_vals;
 
      public:
-      packet_controller_impl(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
+      packet_controller_impl(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, int ant_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
       ~packet_controller_impl();
 
 	  void get_packet(pmt::pmt_t msg);

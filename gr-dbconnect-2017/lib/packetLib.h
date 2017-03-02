@@ -9,8 +9,8 @@
 typedef void spectrum;
 
 typedef enum {ERROR_OK=0, ERROR_INVALID=-1, ERROR_AUTH=-2,
-				ERROR_TIMEOUT=-3, ERROR_CONNECT_REFUSED=-4,
-				ERROR_OTHER=-5, ERROR_BUF=-6} spectrum_eror_t;
+                ERROR_TIMEOUT=-3, ERROR_CONNECT_REFUSED=-4,
+                ERROR_OTHER=-5, ERROR_BUF=-6} spectrum_eror_t;
 
 spectrum* spectrum_init(char debug);
 void spectrum_delete(spectrum* ctx);
@@ -22,6 +22,11 @@ spectrum_eror_t spectrum_putPacket(spectrum* ctx, uint8_t* buffer, uint32_t buff
 spectrum_eror_t spectrum_waitForState(spectrum* ctx, uint32_t wantedState, int32_t timeoutMs);
 double spectrum_getThroughput(spectrum* ctx, uint8_t radioNumber, int durationMs);
 double spectrum_getProvidedThroughput(spectrum* ctx, uint8_t radioNumber, int durationMs);
+spectrum_eror_t spectrum_reportScenario(spectrum* ctx, uint8_t scenario);
+spectrum_eror_t spectrum_reportAntenna(spectrum* ctx, uint8_t antenna);
+
 void spectrum_getStatusMessage(spectrum* ctx, spectrum_eror_t error, char* output, uint32_t len);
+uint64_t spectrum_getTotalBytes(spectrum* ctx, uint8_t radioNumber);
+uint64_t spectrum_getTotalProvidedBytes(spectrum* ctx, uint8_t radioNumber);
 
 #endif /* SPECTRUM_H_ */

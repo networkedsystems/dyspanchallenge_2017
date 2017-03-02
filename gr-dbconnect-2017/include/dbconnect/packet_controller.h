@@ -47,7 +47,7 @@ namespace gr {
        * class. dbconnect::packet_controller::make is the public interface for
        * creating new instances.
        */
-      static sptr make(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
+      static sptr make(float samp_rate, const std::vector<int> swtime, int delay_1, int delay_2, int tconst, int mean1, int mean2, int mean3, int seed, int gain_period, int ant_period, const std::vector<int> &gain_vals, const std::vector<int> &scen_list, bool rand_scen);
 	  virtual void get_packet(pmt::pmt_t msg) = 0;
 	  virtual void request_cmd(int pktcnt) = 0; 
 	  virtual int  get_delay(int dist_type) = 0;
