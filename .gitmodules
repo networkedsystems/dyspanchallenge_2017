@@ -1,0 +1,4 @@
+[submodule "DySPAN17_SpectrumChallenge_KIT"]
+	path = DySPAN17_SpectrumChallenge_KIT
+	url = https://github.com/kit-cel/DySPAN17_SpectrumChallenge_KIT
+	branch = master
